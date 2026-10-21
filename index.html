@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProStudio Editor (CapCut Clone Layout)</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/timeline.css">
+    <link rel="stylesheet" href="styles/effects.css">
+</head>
+<body class="theme-dark mode-video">
+    <div id="app-container">
+        <!-- Top Menu Bar (Height ~50–60px) -->
+        <header id="menu-bar">
+            <div class="menu-brand">
+                <span class="logo-icon">🎬</span>
+                <span class="logo-text">ProStudio</span>
+            </div>
+            
+            <!-- CapCut Clone Dropdown Menus -->
+            <nav class="menu-nav">
+                <div class="menu-item dropdown">
+                    File
+                    <div class="dropdown-content">
+                        <div>New Project</div>
+                        <div>Open Project</div>
+                        <div>Save</div>
+                        <div>Export</div>
+                    </div>
+                </div>
+                <div class="menu-item dropdown">
+                    Edit
+                    <div class="dropdown-content">
+                        <div>Undo</div>
+                        <div>Redo</div>
+                        <div>Cut</div>
+                        <div>Copy</div>
+                        <div>Delete</div>
+                    </div>
+                </div>
+                <div class="menu-item dropdown">
+                    Video
+                    <div class="dropdown-content">
+                        <div>Trim / Split</div>
+                        <div>Crop</div>
+                        <div>Speed</div>
+                        <div>Effects</div>
+                    </div>
+                </div>
+                <div class="menu-item dropdown">
+                    Audio
+                    <div class="dropdown-content">
+                        <div>Music</div>
+                        <div>Voice</div>
+                        <div>Sound Effects</div>
+                    </div>
+                </div>
+                <div class="menu-item dropdown">
+                    Text
+                    <div class="dropdown-content">
+                        <div>Add Text</div>
+                        <div>Subtitle</div>
+                        <div>Auto Caption</div>
+                    </div>
+                </div>
+                <div class="menu-item dropdown">
+                    AI Tools
+                    <div class="dropdown-content">
+                        <div>Background Remover</div>
+                        <div>AI Enhance</div>
+                        <div>AI Avatar</div>
+                        <div>AI Script</div>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="menu-actions">
+                <button class="icon-btn" title="Settings">⚙️</button>
+                <button id="btn-export" class="primary-btn">Export</button>
+            </div>
+        </header>
+
+        <!-- Main Workspace Area -->
+        <main id="workspace">
+            <!-- Left Panel (Width ~220–280px) -->
+            <section id="panel-left" class="panel resizable">
+                <div class="panel-header" style="overflow-x: auto; white-space: nowrap; padding-bottom: 4px;">
+                    <div class="tabs" style="gap: 12px; min-width: max-content;">
+                        <div class="tab active" data-target="media-bin">Media</div>
+                        <div class="tab" data-target="audio-lib">Audio</div>
+                        <div class="tab" data-target="text-lib">Text</div>
+                        <div class="tab" data-target="stickers-lib">Stickers</div>
+                        <div class="tab" data-target="effects-lib">Effects</div>
+                        <div class="tab" data-target="transitions-lib">Transitions</div>
+                        <div class="tab" data-target="filters-lib">Filters</div>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div id="media-bin" class="tab-pane active">
+                        <!-- CapCut Style Inner Sidebar -->
+                        <div class="inner-sidebar">
+                            <div class="inner-sidebar-item active">Local</div>
+                            <div class="inner-sidebar-item">Import</div>
+                            <div class="inner-sidebar-item">AI generated</div>
+                            <div class="inner-sidebar-item">Stock material</div>
+                            <div class="inner-sidebar-item">Brand assets</div>
+                        </div>
+                        <div class="inner-content">
+                            <div class="toolbar">
+                                <button class="primary-btn" title="Import Media" style="width: 100%;">➕ Import</button>
+                            </div>
+                            <div class="media-grid empty-state">
+                                <p>Drag & Drop media here</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Audio Tab -->
+                    <div id="audio-lib" class="tab-pane">
+                        <div class="inner-sidebar">
+                            <div class="inner-sidebar-item active">Music</div>
+                            <div class="inner-sidebar-item">Sound effects</div>
+                            <div class="inner-sidebar-item">Extracted</div>
+                            <div class="inner-sidebar-item">TikTok</div>
+                        </div>
+                        <div class="inner-content">
+                            <div class="media-grid" id="audio-grid"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Text Tab -->
+                    <div id="text-lib" class="tab-pane">
+                        <div class="inner-sidebar">
+                            <div class="inner-sidebar-item active">Add text</div>
+                            <div class="inner-sidebar-item">Effects</div>
+                            <div class="inner-sidebar-item">Text template</div>
+                            <div class="inner-sidebar-item">Auto captions</div>
+                        </div>
+                        <div class="inner-content">
+                            <div class="media-grid" id="text-grid"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Stickers Tab -->
+                    <div id="stickers-lib" class="tab-pane">
+                        <div class="inner-sidebar">
+                            <div class="inner-sidebar-item active">Trending</div>
+                            <div class="inner-sidebar-item">Emphasis</div>
+                            <div class="inner-sidebar-item">Icons</div>
+                        </div>
+                        <div class="inner-content">
+                            <div class="media-grid" id="stickers-grid"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Effects Tab -->
+                    <div id="effects-lib" class="tab-pane">
+                        <div class="inner-sidebar">
+                            <div class="inner-sidebar-item active">Video effects</div>
+                            <div class="inner-sidebar-item">Body effects</div>
+                            <div class="inner-sidebar-item">Photo effects</div>
+                        </div>
+                        <div class="inner-content">
+                            <div class="media-grid" id="effects-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Transitions Tab -->
+                    <div id="transitions-lib" class="tab-pane">
+                        <div class="inner-sidebar">
+                            <div class="inner-sidebar-item active">Trending</div>
+                            <div class="inner-sidebar-item">Overlay</div>
+                            <div class="inner-sidebar-item">Camera</div>
+                            <div class="inner-sidebar-item">Blur</div>
+                            <div class="inner-sidebar-item">Basic</div>
+                            <div class="inner-sidebar-item">Light effect</div>
+                            <div class="inner-sidebar-item">Glitch</div>
+                            <div class="inner-sidebar-item">Distortion</div>
+                        </div>
+                        <div class="inner-content">
+                            <div class="media-grid" id="transitions-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Filters Tab -->
+                    <div id="filters-lib" class="tab-pane">
+                        <div class="inner-sidebar">
+                            <div class="inner-sidebar-item active">Featured</div>
+                            <div class="inner-sidebar-item">Portrait</div>
+                            <div class="inner-sidebar-item">Life</div>
+                            <div class="inner-sidebar-item">Food</div>
+                            <div class="inner-sidebar-item">Movies</div>
+                            <div class="inner-sidebar-item">Nature</div>
+                            <div class="inner-sidebar-item">Retro</div>
+                            <div class="inner-sidebar-item">B&W</div>
+                        </div>
+                        <div class="inner-content">
+                            <div class="media-grid" id="filters-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Center Panel: Preview Monitor -->
+            <section id="panel-center" class="panel resizable">
+                <div class="panel-header">
+                    <span class="panel-title">Preview</span>
+                    <div class="preview-controls">
+                        <select class="zoom-select">
+                            <option>Fit</option>
+                            <option>100%</option>
+                            <option>50%</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="preview-container">
+                    <canvas id="preview-canvas" width="1920" height="1080"></canvas>
+                </div>
+                <div class="transport-controls">
+                    <div class="timecode">00:00:00:00</div>
+                    <div class="playback-btns">
+                        <button class="icon-btn play-btn" id="btn-play">▶</button>
+                    </div>
+                    <div class="tools-group">
+                        <button class="icon-btn">🔍</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Properties (Width ~280–350px) -->
+            <section id="panel-right" class="panel">
+                <div class="panel-header">
+                    <div class="tabs">
+                        <div class="tab active" data-target="prop-video">Video</div>
+                        <div class="tab" data-target="prop-audio">Audio</div>
+                        <div class="tab" data-target="prop-speed">Speed</div>
+                        <div class="tab" data-target="prop-ai">AI Tools</div>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div id="prop-video" class="tab-pane active" style="flex-direction: column; padding: 0;">
+                        <div class="sub-tabs">
+                            <div class="sub-tab active">Basic</div>
+                            <div class="sub-tab">Remove BG</div>
+                            <div class="sub-tab">Mask</div>
+                            <div class="sub-tab">Retouch</div>
+                        </div>
+                        <div class="inner-content inspector-form">
+                            <!-- Transform Group -->
+                            <div class="property-group">
+                                <h3 class="group-title">Transform</h3>
+                            <div class="prop-row">
+                                <label>Position</label>
+                                <div class="multi-input">
+                                    <input type="number" value="0">
+                                    <input type="number" value="0">
+                                </div>
+                            </div>
+                            <div class="prop-row">
+                                <label>Scale</label>
+                                <div class="slider-input">
+                                    <input type="range" min="0" max="400" value="100">
+                                </div>
+                            </div>
+                            <div class="prop-row">
+                                <label>Rotation</label>
+                                <div class="slider-input">
+                                    <input type="range" min="-180" max="180" value="0">
+                                </div>
+                            </div>
+                            <div class="prop-row">
+                                <label>Opacity</label>
+                                <div class="slider-input">
+                                    <input type="range" min="0" max="100" value="100">
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="prop-audio" class="tab-pane inspector-form">
+                        <div class="property-group">
+                            <h3 class="group-title">Volume</h3>
+                            <div class="prop-row">
+                                <label>Level</label>
+                                <div class="slider-input">
+                                    <input type="range" min="0" max="200" value="100">
+                                </div>
+                            </div>
+                            <div class="prop-row">
+                                <label>Fade In</label>
+                                <div class="slider-input">
+                                    <input type="range" min="0" max="10" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Timeline Area (Height ~200-300px) -->
+        <footer id="timeline-area">
+            <div class="timeline-toolbar">
+                <div class="tools-left">
+                    <button class="tool-btn active">👆</button>
+                    <button class="tool-btn">✂️</button>
+                </div>
+                <div class="tools-center">
+                    <button class="icon-btn">🧲</button>
+                    <button class="icon-btn">🔗</button>
+                </div>
+                <div class="tools-right timeline-zoom">
+                    <span>➖</span>
+                    <input type="range" min="1" max="100" value="20" class="zoom-slider">
+                    <span>➕</span>
+                </div>
+            </div>
+            <div class="timeline-container">
+                <div class="track-headers">
+                    <div class="track-header video-track" style="display:flex; justify-content:space-between; padding: 4px;">
+                        <span class="track-name">Video 2</span>
+                        <div style="display:flex; gap:4px; opacity:0.6;">
+                            <span>👁️</span> <span>🔒</span>
+                        </div>
+                    </div>
+                    <div class="track-header video-track" style="display:flex; justify-content:space-between; padding: 4px;">
+                        <span class="track-name">Video 1</span>
+                        <div style="display:flex; gap:4px; opacity:0.6;">
+                            <span>👁️</span> <span>🔒</span>
+                        </div>
+                    </div>
+                    <div class="track-divider"></div>
+                    <div class="track-header audio-track" style="display:flex; justify-content:space-between; padding: 4px;">
+                        <span class="track-name">Audio 1</span>
+                        <div style="display:flex; gap:4px; opacity:0.6;">
+                            <span>🎤</span> <span>🔒</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tracks-area">
+                    <div class="time-ruler"></div>
+                    <div class="playhead"></div>
+                    <div class="track video-track-content"></div>
+                    <div class="track video-track-content"></div>
+                    <div class="track audio-track-content"></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js" type="module"></script>
+</body>
+</html>
