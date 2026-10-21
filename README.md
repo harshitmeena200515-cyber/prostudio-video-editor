@@ -3,6 +3,7 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5 / CSS3](https://img.shields.io/badge/UI-HTML5%20%2F%20CSS3-orange.svg)](#)
 [![Web Audio API](https://img.shields.io/badge/Audio-Web%20Audio%20API-red.svg)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+[![Google AI Studio](https://img.shields.io/badge/AI%20Studio-Gemini%203.8%20Flash-8A2BE2.svg)](https://aistudio.google.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **ProStudio** is an advanced, lightweight web-based multimedia editor featuring a sleek NLE (Non-Linear Editor) interface inspired by tools like CapCut and Premiere Pro. It runs entirely inside modern web browsers with zero installation required.
@@ -11,6 +12,11 @@
 
 ## ✨ Key Features
 
+- 🤖 **Google AI Studio (Gemini 3.8 Flash)**:
+  - **AI Video Scriptwriter**: Scene-by-scene script breakdown with camera angles, narration, and graphic hooks.
+  - **Auto-Captions & Subtitle Engine**: Generates timed `.srt` subtitle files from voice narration.
+  - **Viral SEO Optimizer**: Algorithm-targeted YouTube/Instagram titles, tags, and description.
+- 👑 **Creator Pro Monetization Tier**: Integrated license unlock code support (`PROHARSHIT2026`) for watermark-free 4K exports.
 - 🎞️ **Multi-Track Timeline**: Non-linear editing interface with trim, split, cut, snap-to-grid, and seekhead scrubbing.
 - 🎚️ **Web Audio Engine**: Live audio waveform visualization, volume gain control, background music mixing, and sound effects.
 - 🎨 **Visual Effects & Shaders**: Real-time color grading, brightness/contrast adjustments, transitions, and video filters.

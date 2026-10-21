@@ -16,6 +16,7 @@ import { initPanels } from './ui/panels.js';
 import { renderLibrary } from './ui/library-renderer.js';
 import { initShortcuts } from './ui/keyboard-shortcuts.js';
 import { initContextMenus } from './ui/context-menus.js';
+import { ProStudioAI } from './ai/ai-studio.js';
 
 class App {
     constructor() {
@@ -41,6 +42,9 @@ class App {
         
         // Initialize Media Manager
         this.mediaManager.init();
+        
+        // Initialize AI Studio (Gemini 3.8 Flash)
+        this.aiStudio = new ProStudioAI(this);
         
         this.bindEvents();
         
