@@ -43,7 +43,7 @@ class App {
         // Initialize Media Manager
         this.mediaManager.init();
         
-        // Initialize AI Studio (Gemini 3.8 Flash)
+        // Initialize AI Studio Neural Engine
         this.aiStudio = new ProStudioAI(this);
         
         this.bindEvents();

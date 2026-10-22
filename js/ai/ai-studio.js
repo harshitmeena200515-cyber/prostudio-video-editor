@@ -1,13 +1,13 @@
 /**
  * ProStudio AI Studio Integration Module
- * Powered by Google AI Studio (Gemini 3.8 Flash)
+ * Powered by AI Studio Neural Engine
  * Features: AI Scriptwriting, Auto Subtitle/Captions, Viral SEO & Creator Pro Tier
  */
 
 export class ProStudioAI {
     constructor(app) {
         this.app = app;
-        this.apiKey = localStorage.getItem('gemini_api_key') || '';
+        this.apiKey = localStorage.getItem('ai_studio_key') || localStorage.getItem('ai_api_key') || '';
         this.isPro = localStorage.getItem('prostudio_tier') === 'pro';
         this.init();
     }
@@ -15,7 +15,7 @@ export class ProStudioAI {
     init() {
         this.injectUI();
         this.bindEvents();
-        console.log("✨ ProStudio AI Studio initialized with Gemini 3.8 Flash engine");
+        console.log("✨ ProStudio AI Studio initialized with Neural Engine");
     }
 
     injectUI() {
@@ -46,12 +46,12 @@ export class ProStudioAI {
                 <div class="ai-tab-header" style="border-radius: 6px; margin-bottom: 12px;">
                     <div>
                         <div style="font-weight: 700; font-size: 13px; color: #fff; display: flex; align-items: center; gap: 6px;">
-                            <span>✨ Gemini AI Studio</span>
+                            <span>✨ AI Studio Engine</span>
                             <span class="pro-badge" id="ai-license-badge">${this.isPro ? 'PRO ACTIVE' : 'FREE'}</span>
                         </div>
                         <div style="font-size: 11px; color: #a1a1aa;">Smart Script, Captions & SEO</div>
                     </div>
-                    <button id="btn-open-ai-settings" class="ai-btn-secondary" title="Configure Gemini API Key">⚙️ Key</button>
+                    <button id="btn-open-ai-settings" class="ai-btn-secondary" title="Configure AI Studio Key">⚙️ Key</button>
                 </div>
 
                 <!-- 1. AI Video Scriptwriter -->
@@ -131,7 +131,7 @@ export class ProStudioAI {
             aiHeaderBtn.id = 'btn-header-ai';
             aiHeaderBtn.className = 'ai-pill-btn';
             aiHeaderBtn.innerHTML = '<span>✨ AI Studio</span>';
-            aiHeaderBtn.title = 'Open AI Studio (Gemini 3.8 Flash)';
+            aiHeaderBtn.title = 'Open AI Studio';
             menuActions.insertBefore(aiHeaderBtn, menuActions.firstChild);
         }
     }
@@ -245,11 +245,11 @@ export class ProStudioAI {
         });
     }
 
-    async callGemini(prompt, systemInstruction = '') {
-        const apiKey = this.apiKey || localStorage.getItem('gemini_api_key');
+    async callAIStudio(prompt, systemInstruction = '') {
+        const apiKey = this.apiKey || localStorage.getItem('ai_studio_key') || localStorage.getItem('ai_api_key');
         if (!apiKey) {
             this.showSettingsModal();
-            throw new Error("Gemini API Key is missing. Please enter your API Key.");
+            throw new Error("AI Studio API Key is missing. Please enter your API Key.");
         }
 
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
@@ -268,7 +268,7 @@ export class ProStudioAI {
 
         if (!res.ok) {
             const errData = await res.json().catch(() => ({}));
-            throw new Error(errData?.error?.message || `HTTP ${res.status}: Gemini API call failed`);
+            throw new Error(errData?.error?.message || `HTTP ${res.status}: AI Studio API call failed`);
         }
 
         const data = await res.json();
@@ -289,7 +289,7 @@ export class ProStudioAI {
         }
 
         btn.disabled = true;
-        btn.innerHTML = '⏳ Generating with Gemini 3.8 Flash...';
+        btn.innerHTML = '⏳ Generating with AI Studio...';
         resultBox.style.display = 'block';
         resultBox.innerText = 'Creating cinematic scene breakdown, camera cues, and voiceover...';
 
@@ -308,7 +308,7 @@ Format the response strictly with:
 3. 🚀 CALL TO ACTION (CTA): Ending hook for likes/subs/shares.
 Keep it snappy, engaging, and ready for production.`;
 
-            const script = await this.callGemini(prompt, "You are an award-winning CapCut & Premiere Pro video director and scriptwriter.");
+            const script = await this.callAIStudio(prompt, "You are an award-winning CapCut & Premiere Pro video director and scriptwriter.");
             resultBox.innerText = script;
             actionsBox.style.display = 'flex';
         } catch (err) {
@@ -347,7 +347,7 @@ Sample Subtitle text here
 
 Do not include markdown code block backticks.`;
 
-            const srtOutput = await this.callGemini(prompt, "You are a professional video subtitle and closed captions timing engine.");
+            const srtOutput = await this.callAIStudio(prompt, "You are a professional video subtitle and closed captions timing engine.");
             resultBox.innerText = srtOutput.replace(/```(srt)?/g, '').trim();
             actionsBox.style.display = 'flex';
         } catch (err) {
@@ -381,7 +381,7 @@ Generate:
 3. 📝 SEO Description with Chapters/Timestamps outline
 4. 🏷️ 15 High-ranking comma-separated Tags & Hashtags`;
 
-            const seoData = await this.callGemini(prompt, "You are a top YouTube algorithm growth strategist.");
+            const seoData = await this.callAIStudio(prompt, "You are a top YouTube algorithm growth strategist.");
             resultBox.innerText = seoData;
         } catch (err) {
             resultBox.innerText = `Error: ${err.message}`;
@@ -401,25 +401,25 @@ Generate:
                 <div class="ai-modal-container">
                     <div class="ai-modal-header">
                         <div style="font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 8px;">
-                            <span>✨ Google AI Studio Configuration</span>
+                            <span>✨ AI Studio Configuration</span>
                         </div>
                         <button class="ai-modal-close" id="btn-close-ai-modal">&times;</button>
                     </div>
                     <div style="padding: 20px;">
                         <p style="font-size: 12px; color: #a1a1aa; line-height: 1.6; margin-bottom: 14px;">
-                            ProStudio connects directly to Google AI Studio's <strong>gemini-3.8-flash</strong> model. Your API key is stored locally in your browser's <code>localStorage</code> and is never shared or transmitted elsewhere.
+                            ProStudio connects directly to AI Studio's high-speed neural models. Your API key is stored locally in your browser's <code>localStorage</code> and is never shared or transmitted elsewhere.
                         </p>
                         
                         <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #e4e4e7;">
-                            Gemini API Key:
+                            AI Studio API Key:
                         </label>
-                        <input type="password" id="modal-gemini-key" class="ai-input" style="font-family: monospace;" placeholder="AQ.Ab8RN..." value="${this.apiKey}" />
+                        <input type="password" id="modal-ai-key" class="ai-input" style="font-family: monospace;" placeholder="AI Key..." value="${this.apiKey}" />
                         
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
                             <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #06b6d4; font-size: 11px; text-decoration: underline;">
-                                ↗ Get Free API Key from Google AI Studio
+                                ↗ Get API Key from AI Studio
                             </a>
-                            <button id="btn-save-gemini-key" class="ai-btn-primary" style="width: auto; padding: 8px 18px;">
+                            <button id="btn-save-ai-key" class="ai-btn-primary" style="width: auto; padding: 8px 18px;">
                                 Save Key
                             </button>
                         </div>
@@ -435,12 +435,12 @@ Generate:
                 if (e.target === modal) modal.style.display = 'none';
             });
 
-            document.getElementById('btn-save-gemini-key').addEventListener('click', () => {
-                const val = (document.getElementById('modal-gemini-key')?.value || '').trim();
+            document.getElementById('btn-save-ai-key').addEventListener('click', () => {
+                const val = (document.getElementById('modal-ai-key')?.value || '').trim();
                 if (val) {
-                    localStorage.setItem('gemini_api_key', val);
+                    localStorage.setItem('ai_api_key', val);
                     this.apiKey = val;
-                    alert('✅ Gemini API Key saved locally!');
+                    alert('✅ AI Studio API Key saved locally!');
                     modal.style.display = 'none';
                 } else {
                     alert('Please enter a valid API key.');
@@ -449,7 +449,7 @@ Generate:
         }
 
         modal.style.display = 'flex';
-        const keyInput = document.getElementById('modal-gemini-key');
+        const keyInput = document.getElementById('modal-ai-key');
         if (keyInput) keyInput.value = this.apiKey;
     }
 }
