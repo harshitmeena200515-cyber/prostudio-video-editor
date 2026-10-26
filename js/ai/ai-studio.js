@@ -246,33 +246,44 @@ export class ProStudioAI {
     }
 
     async callAIStudio(prompt, systemInstruction = '') {
-        const apiKey = this.apiKey || localStorage.getItem('ai_studio_key') || localStorage.getItem('ai_api_key');
+        const apiKey = this.apiKey || localStorage.getItem('ai_studio_key') || localStorage.getItem('ai_api_key') || '';
         if (!apiKey) {
             this.showSettingsModal();
             throw new Error("AI Studio API Key is missing. Please enter your API Key.");
         }
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
-        const body = {
-            contents: [{ parts: [{ text: prompt }] }]
-        };
-        if (systemInstruction) {
-            body.systemInstruction = { parts: [{ text: systemInstruction }] };
+        const models = ['gemini-3.5-flash-lite', 'gemini-3.8-flash', 'gemini-flash-latest'];
+        let lastError = null;
+
+        for (const model of models) {
+            try {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                const body = {
+                    contents: [{ parts: [{ text: prompt }] }]
+                };
+                if (systemInstruction) {
+                    body.systemInstruction = { parts: [{ text: systemInstruction }] };
+                }
+
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    return data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
+                }
+
+                const errData = await res.json().catch(() => ({}));
+                lastError = new Error(errData?.error?.message || `HTTP ${res.status} on ${model}`);
+            } catch (err) {
+                lastError = err;
+            }
         }
 
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        });
-
-        if (!res.ok) {
-            const errData = await res.json().catch(() => ({}));
-            throw new Error(errData?.error?.message || `HTTP ${res.status}: AI Studio API call failed`);
-        }
-
-        const data = await res.json();
-        return data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
+        throw lastError || new Error("AI Studio call failed across models.");
     }
 
     async generateScript() {
