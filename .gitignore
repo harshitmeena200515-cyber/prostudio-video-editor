@@ -16,3 +16,16 @@ build/
 # Secrets & Environment
 .env
 .env.*
+
+# Engine artifacts (Phase 2)
+engine/.venv/
+engine/bin/
+engine/models/*.onnx
+engine/models/*.pth
+engine/test_media/*.mp4
+engine/test_media/*.mkv
+engine/__pycache__/
+engine/pipeline/__pycache__/
+engine/tests/__pycache__/
+*.pyc
+uv.lock

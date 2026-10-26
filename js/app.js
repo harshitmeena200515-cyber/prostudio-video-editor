@@ -11,6 +11,7 @@ import { getAllAdvancedTools } from './core/advanced-tools.js';
 import { AudioEngine } from './audio/audio-engine.js';
 import { RendererPipeline } from './export/renderer.js';
 import { PhotoUI } from './photo/photo-ui.js';
+import { EnhancementUI } from './ai/enhancement-ui.js';
 
 import { initPanels } from './ui/panels.js';
 import { renderLibrary } from './ui/library-renderer.js';
@@ -27,6 +28,7 @@ class App {
         this.mediaManager = new MediaManager(this.projectManager);
         this.renderer = new RendererPipeline(this.previewEngine, this.audioEngine);
         this.photoUI = new PhotoUI(this);
+        this.enhancementUI = new EnhancementUI(this);
         
         this.currentMode = 'video'; // video, color, audio, photo
         
@@ -48,6 +50,12 @@ class App {
         
         this.bindEvents();
         
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialMode = urlParams.get('mode');
+        if (initialMode && ['video', 'enhance', 'photo'].includes(initialMode)) {
+            this.setMode(initialMode);
+        }
+
         console.log("🎬 ProStudio Editor Initialized");
     }
     
@@ -58,14 +66,20 @@ class App {
             btnPlay.addEventListener('click', () => this.togglePlayback());
         }
         
-        // Mode Switcher
-        const modeBtns = document.querySelectorAll('.mode-btn');
+        // Mode Switcher (Pills & Buttons)
+        const modeBtns = document.querySelectorAll('.mode-btn, .mode-pill-btn');
         modeBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                modeBtns.forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                this.setMode(e.target.getAttribute('data-mode'));
+                const mode = e.currentTarget.getAttribute('data-mode');
+                if (mode) this.setMode(mode);
             });
+        });
+
+        // AI Tools Dropdown -> AI Enhance shortcut
+        document.querySelectorAll('.dropdown-content div').forEach(item => {
+            if (item.innerText && item.innerText.trim() === 'AI Enhance') {
+                item.addEventListener('click', () => this.setMode('enhance'));
+            }
         });
         
         // Export
@@ -124,13 +138,23 @@ class App {
         if (this.currentMode === 'photo') {
             this.photoUI.deactivate();
         }
+        if (this.currentMode === 'enhance') {
+            this.enhancementUI.deactivate();
+        }
         
         this.currentMode = mode;
         document.body.className = `theme-dark mode-${mode}`;
         
         if (mode === 'photo') {
             this.photoUI.activate();
+        } else if (mode === 'enhance') {
+            this.enhancementUI.activate();
         }
+
+        // Update active class on mode pills
+        document.querySelectorAll('.mode-pill-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
+        });
     }
     
     // Tools actions called from shortcuts

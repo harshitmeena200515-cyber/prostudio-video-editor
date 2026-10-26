@@ -1,0 +1,23 @@
+[project]
+name = "prostudio-engine"
+version = "0.1.0"
+description = "ProStudio AI Video Enhancement Engine — Real-ESRGAN tiled inference with FFmpeg pipeline"
+readme = "README.md"
+authors = [
+    { name = "harshitmeena200515-cyber", email = "harshitmeena200515-cyber@users.noreply.github.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "onnxruntime-gpu>=1.21",
+    "numpy>=1.26",
+    "Pillow>=11.0",
+]
+
+[project.scripts]
+prostudio-engine = "server:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
