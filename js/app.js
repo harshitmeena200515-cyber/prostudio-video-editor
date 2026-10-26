@@ -36,6 +36,9 @@ class App {
     }
     
     init() {
+        // Initialize AI Studio Neural Engine first so its pane/tab exists
+        this.aiStudio = new ProStudioAI(this);
+
         // Initialize UI
         initPanels();
         renderLibrary();
@@ -45,14 +48,11 @@ class App {
         // Initialize Media Manager
         this.mediaManager.init();
         
-        // Initialize AI Studio Neural Engine
-        this.aiStudio = new ProStudioAI(this);
-        
         this.bindEvents();
         
         const urlParams = new URLSearchParams(window.location.search);
         const initialMode = urlParams.get('mode');
-        if (initialMode && ['video', 'enhance', 'photo'].includes(initialMode)) {
+        if (initialMode && ['video', 'enhance', 'photo', 'aistudio'].includes(initialMode)) {
             this.setMode(initialMode);
         }
 
@@ -145,10 +145,40 @@ class App {
         this.currentMode = mode;
         document.body.className = `theme-dark mode-${mode}`;
         
+        const leftPanel = document.getElementById('panel-left');
+
         if (mode === 'photo') {
             this.photoUI.activate();
+            if (leftPanel) leftPanel.style.width = '';
         } else if (mode === 'enhance') {
             this.enhancementUI.activate();
+            if (leftPanel) leftPanel.style.width = '';
+        } else if (mode === 'aistudio') {
+            if (this.currentMode === 'photo') this.photoUI.deactivate();
+            if (this.currentMode === 'enhance') this.enhancementUI.deactivate();
+            if (leftPanel) leftPanel.style.width = '380px';
+            const aiTab = document.getElementById('tab-ai-studio');
+            if (aiTab) {
+                document.querySelectorAll('.panel-header .tab').forEach(t => t.classList.remove('active'));
+                aiTab.classList.add('active');
+                document.querySelectorAll('#panel-left .tab-pane').forEach(p => p.classList.remove('active'));
+                const aiPane = document.getElementById('ai-studio-lib');
+                if (aiPane) aiPane.classList.add('active');
+            }
+        } else {
+            if (this.currentMode === 'photo') this.photoUI.deactivate();
+            if (this.currentMode === 'enhance') this.enhancementUI.deactivate();
+            if (leftPanel) leftPanel.style.width = '';
+            const mediaTab = document.querySelector('.panel-header .tab[data-target="media-bin"]');
+            if (mediaTab) {
+                document.querySelectorAll('.panel-header .tab').forEach(t => t.classList.remove('active'));
+                mediaTab.classList.add('active');
+                document.querySelectorAll('#panel-left .tab-pane').forEach(p => p.classList.remove('active'));
+                const mediaPane = document.getElementById('media-bin');
+                if (mediaPane) mediaPane.classList.add('active');
+            }
+            // Standard editor
+            if (leftPanel) leftPanel.style.width = '';
         }
 
         // Update active class on mode pills

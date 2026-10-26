@@ -725,3 +725,11 @@ body.mode-enhance #enhancement-workspace {
     color: var(--text-primary);
     border-color: rgba(255, 255, 255, 0.2);
 }
+
+
+.mode-pill-btn[data-mode="aistudio"].active {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(6, 182, 212, 0.15));
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.35);
+}
